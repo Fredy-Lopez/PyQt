@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="bebidasMenu">
+    <file>bebidasMenu/Cachaza.png</file>
+    <file>bebidasMenu/Jugo.png</file>
+    <file>bebidasMenu/Ron.png</file>
+    <file>bebidasMenu/Vodka.png</file>
+  </qresource>
+</RCC>
