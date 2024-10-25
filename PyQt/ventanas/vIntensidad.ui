@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>619</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QFrame" name="fondo">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>750</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame {
+    background-color: white;
+	border-radius: 30px;
+}
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="Bebida">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>20</y>
+      <width>681</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: &quot;Calibri&quot;;         /* Fuente Calibri */
+    font-size: 24pt;                /* Tamaño de 20pt */
+    color: #AC1F01;                 /* Color rojo oscuro especificado */
+    font-weight: bold;            /* Normal, ajusta a bold si necesitas */
+    text-align: left;               /* Alineación izquierda, cámbialo a center si es necesario */
+	background: none;
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Bebida:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TituloIntensidad">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>80</y>
+      <width>671</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: &quot;Calibri&quot;;         /* Fuente Calibri */
+    font-size: 20pt;                /* Tamaño de 20pt */
+    color: #AC1F01;                 /* Color rojo oscuro especificado */       
+    text-align: left;               /* Alineación izquierda, cámbialo a center si es necesario */
+	background: none;
+	font-weight: bold; 
+
+}
+</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>Seleccione la intensidad de su bebida</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Cambiar">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>500</y>
+      <width>160</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #7F7F7F;
+    color: white;                /* Texto blanco */
+    font-family: Calibri;         /* Fuente Calibri */
+    font-size: 22px;              /* Tamaño de la fuente */
+    font-weight: bold;  
+    border-radius: 20px;          /* Bordes redondeados */
+    padding: 10px 20px;           /* Espaciado interno para agrandar el botón */
+	border: 1px solid white;
+}
+
+QPushButton:hover {
+   background-color: #696969;     /* Color de fondo al pasar el mouse */
+}</string>
+    </property>
+    <property name="text">
+     <string>CAMBIAR</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="Confirmar">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>500</y>
+      <width>300</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #00B0F0;
+    color: white;                /* Texto blanco */
+    font-family: Calibri;         /* Fuente Calibri */
+    font-size: 22px;              /* Tamaño de la fuente */
+    font-weight: bold;  
+    border-radius: 20px;          /* Bordes redondeados */
+    padding: 10px 20px;           /* Espaciado interno para agrandar el botón */
+	border: 1px solid white;
+}
+
+QPushButton:hover {
+   background-color: #008EC0;     /* Color de fondo al pasar el mouse */
+}</string>
+    </property>
+    <property name="text">
+     <string>CONFIRMAR PEDIDO</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Suave">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>180</y>
+      <width>400</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton {
+    font-family: &quot;Calibri&quot;;        
+    font-size: 24pt;               
+    color: white;               
+    font-weight: bold;            
+    text-align: center;
+	background-color: rgb(254, 203, 140);
+	border-radius: 20px;
+    padding-left: 35px; /* Añadir espacio para que el texto se vea centrado */
+}
+
+/* Estilo para el indicador (círculo de marcado) */
+QRadioButton::indicator {
+    width: 32px; /* Tamaño del círculo total */
+    height: 32px; /* Tamaño del círculo total */
+    border-radius: 15px; /* Hace que sea circular */
+    border: 2px solid black; /* Borde del círculo desmarcado */
+}
+
+/* Círculo desmarcado */
+QRadioButton::indicator::unchecked {
+    background-color: white; /* Fondo del círculo desmarcado */
+}
+
+/* Círculo marcado con borde azul hacia adentro */
+QRadioButton::indicator::checked {
+    background-color: white; /* Centro del círculo marcado en blanco */
+    border: 6px solid blue; /* Borde grueso azul */
+    width: 18px;  /* Reducimos el tamaño del círculo interior */
+    height: 18px; /* Para que el borde crezca hacia adentro */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>SUAVE Y LIGERO</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Normal">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>280</y>
+      <width>400</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton {
+    font-family: &quot;Calibri&quot;;        
+    font-size: 24pt;               
+    color: white;               
+    font-weight: bold;            
+    text-align: center;
+	
+	background-color: rgb(244, 177, 131);
+	border-radius: 20px;
+    padding-left: 35px; /* Añadir espacio para que el texto se vea centrado */
+}
+
+/* Estilo para el indicador (círculo de marcado) */
+QRadioButton::indicator {
+    width: 32px; /* Tamaño del círculo total */
+    height: 32px; /* Tamaño del círculo total */
+    border-radius: 15px; /* Hace que sea circular */
+    border: 2px solid black; /* Borde del círculo desmarcado */
+}
+
+/* Círculo desmarcado */
+QRadioButton::indicator::unchecked {
+    background-color: white; /* Fondo del círculo desmarcado */
+}
+
+/* Círculo marcado con borde azul hacia adentro */
+QRadioButton::indicator::checked {
+    background-color: white; /* Centro del círculo marcado en blanco */
+    border: 6px solid blue; /* Borde grueso azul */
+    width: 18px;  /* Reducimos el tamaño del círculo interior */
+    height: 18px; /* Para que el borde crezca hacia adentro */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>NORMAL</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Fuerte">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>380</y>
+      <width>400</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QRadioButton {
+    font-family: &quot;Calibri&quot;;        
+    font-size: 24pt;               
+    color: white;               
+    font-weight: bold;            
+    text-align: center;
+	
+	background-color: rgb(230, 134, 60);
+	border-radius: 20px;
+    padding-left: 35px; /* Añadir espacio para que el texto se vea centrado */
+}
+
+/* Estilo para el indicador (círculo de marcado) */
+QRadioButton::indicator {
+    width: 32px; /* Tamaño del círculo total */
+    height: 32px; /* Tamaño del círculo total */
+    border-radius: 15px; /* Hace que sea circular */
+    border: 2px solid black; /* Borde del círculo desmarcado */
+}
+
+/* Círculo desmarcado */
+QRadioButton::indicator::unchecked {
+    background-color: white; /* Fondo del círculo desmarcado */
+}
+
+/* Círculo marcado con borde azul hacia adentro */
+QRadioButton::indicator::checked {
+    background-color: white; /* Centro del círculo marcado en blanco */
+    border: 6px solid blue; /* Borde grueso azul */
+    width: 18px;  /* Reducimos el tamaño del círculo interior */
+    height: 18px; /* Para que el borde crezca hacia adentro */
+}
+</string>
+    </property>
+    <property name="text">
+     <string>FUERTE E INTENSO</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

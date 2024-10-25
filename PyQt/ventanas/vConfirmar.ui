@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>753</width>
+    <height>617</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+	background-color: rgba(255, 255, 255, 180); /* Transparencia del 14% */
+	border-radius: 20px; /* Ajusta el valor del radius */
+}
+QWidget#centralwidget {
+    background-color: rgba(0, 150, 136, 230); /* Color verde con transparencia */
+    border-radius: 20px; /* Bordes redondeados */
+}</string>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <widget class="QFrame" name="fondo">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>750</width>
+     <height>600</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QFrame {
+    background-color: white;
+	border-radius: 30px;
+}
+</string>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QLabel" name="jBebida">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>20</y>
+      <width>681</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: &quot;Calibri&quot;;         /* Fuente Calibri */
+    font-size: 24pt;                /* Tamaño de 20pt */
+    color: #AC1F01;                 /* Color rojo oscuro especificado */
+    font-weight: bold;            /* Normal, ajusta a bold si necesitas */
+    text-align: left;               /* Alineación izquierda, cámbialo a center si es necesario */
+	background: none;
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Seleccionaste: </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="jContenido">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>220</y>
+      <width>671</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel {
+    font-family: &quot;Calibri&quot;;         /* Fuente Calibri */
+    font-size: 20pt;                /* Tamaño de 20pt */
+    color: #AC1F01;                 /* Color rojo oscuro especificado */       
+    text-align: left;               /* Alineación izquierda, cámbialo a center si es necesario */
+	background: none;
+
+}
+</string>
+    </property>
+    <property name="inputMethodHints">
+     <set>Qt::ImhNone</set>
+    </property>
+    <property name="text">
+     <string>Contiene:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="jCambiar">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>500</y>
+      <width>160</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #7F7F7F;
+    color: white;                /* Texto blanco */
+    font-family: Calibri;         /* Fuente Calibri */
+    font-size: 22px;              /* Tamaño de la fuente */
+    font-weight: bold;  
+    border-radius: 20px;          /* Bordes redondeados */
+    padding: 10px 20px;           /* Espaciado interno para agrandar el botón */
+	border: 1px solid white;
+}
+
+QPushButton:hover {
+   background-color: #696969;     /* Color de fondo al pasar el mouse */
+}</string>
+    </property>
+    <property name="text">
+     <string>CAMBIAR</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="jConfirmar">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>500</y>
+      <width>300</width>
+      <height>50</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+    background-color: #00B0F0;
+    color: white;                /* Texto blanco */
+    font-family: Calibri;         /* Fuente Calibri */
+    font-size: 22px;              /* Tamaño de la fuente */
+    font-weight: bold;  
+    border-radius: 20px;          /* Bordes redondeados */
+    padding: 10px 20px;           /* Espaciado interno para agrandar el botón */
+	border: 1px solid white;
+}
+
+QPushButton:hover {
+   background-color: #008EC0;     /* Color de fondo al pasar el mouse */
+}</string>
+    </property>
+    <property name="text">
+     <string>CONFIRMAR PEDIDO</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

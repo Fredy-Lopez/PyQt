@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix=" bebidasRon">
+    <file>pomeloRumSplash.png</file>
+    <file>tropicalRumStorm.png</file>
+    <file>cubaLibre.png</file>
+    <file>pinaColada.png</file>
+    <file>ronPunch.png</file>
+    <file>ronTonicTropical.png</file>
+    <file>tropicalCubaLibre.png</file>
+    <file>tropicalPunch.png</file>
+  </qresource>
+</RCC>
