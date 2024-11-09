@@ -1,0 +1,266 @@
+#include <AFMotor.h>
+#include <Servo.h>  // Biblioteca del servo
+
+// Configuración del motor paso a paso
+AF_Stepper motor(200, 1);  // Motor de 200 pasos, puerto 2
+
+// Configuración del servo
+Servo servo1;  // Objeto servo
+Servo servo2;
+const int pinServo1 = 9;  // Pin al que está conectado el servo
+const int pinServo2 = 10;
+
+// Posiciones de las botellas
+const int posicionesBotellas[] = { 680, 1880, 3080, 4280, 5480, 6680, 7880, 9080 };
+int posicionActual = 0;  // Inicialmente en la posición inicial
+
+// Estructura para almacenar las bebidas, sus ingredientes y volúmenes
+typedef struct {
+    const char* nombre;
+    int ingredientes[4];   // Cada bebida tiene hasta 4 ingredientes
+    int volPorIngredienteSuave[4]; // Volumen para cada ingrediente en mL
+    int volPorIngredienteNormal[4];
+    int volPorIngredienteFuerte[4];
+    int numIngredientes;    // Número de ingredientes
+} Bebida;
+// Definición de las bebidas
+/*
+LISTA DE BEBIDAS:
+0: JUGO DE LIMON
+1: JUGO DE PIÑA
+2: JUGO DE NARANJA
+3: JUGO DE POMELO
+4: AGUA TONICA
+5: CACHAZA
+6: VODKA
+7: RON
+*/
+Bebida bebidas[] = 
+{
+    //JUGOS
+    {"PIÑA COOLER", {0, 1, 4}, {50, 150, 100}, {50, 150, 100}, {50, 150, 100}, 3},
+    {"NARANJA SUNRISE", {0, 2}, {75, 225}, {75, 225}, {75, 225}, 2},
+    {"LIMONETTO", {0, 4}, {100, 200}, {100, 200}, {100, 200}, 2},
+    {"NARANJADA", {2, 4}, {200, 100}, {200, 100}, {200, 100}, 2},
+    {"CITRUS PUNCH", {0, 1, 2}, {100, 100, 100}, {100, 100, 100}, {100, 100, 100}, 3},
+    {"CITRUS BURST", {0, 3}, {150, 150}, {150, 150}, {150, 150}, 2},
+    {"PIÑA COLADA SIN ALCOHOL", {0, 1}, {50, 250}, {50, 250}, {50, 250}, 2},
+    //VODKA
+    {"DESTORNILLADOR", {2, 6}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"VODKA TONIC", {4, 6}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"CAIPIROSKA", {0, 6}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"SALTY DOG", {3, 6}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"CITRUS VODKA PUNCH", {0, 2, 6}, {135, 135, 30}, {125, 125, 50}, {100, 100, 100}, 3},
+    {"VODKA CITRUS BREEZE", {0, 3, 6}, {90, 180, 30}, {100, 150, 50}, {75, 125, 100}, 3},
+    //CACHAZA
+    {"CAIPIRINHA", {0, 5}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"CAIPIFRUTA", {0, 1, 5}, {135, 135, 30}, {100, 150, 50}, {100, 100, 100}, 3}, 
+    {"CACHAZA TONIC", {3, 4, 5}, {135, 135, 30}, {100, 150, 50}, {100, 100, 100}, 3}, 
+    {"TROPICAL CAIPIRINHA", {0, 1, 5}, {135, 135, 30}, {100, 150, 50}, {100, 100, 100}, 3}, 
+    {"CAIPIRINHA POMELO", {0, 3, 5}, {90, 180, 30}, {100, 150, 50}, {100, 100, 100}, 3}, 
+    {"BATIDA CITRUS", {0, 2, 5}, {135, 135, 30}, {100, 150, 50}, {100, 100, 100}, 3}, 
+    {"CACHAZA COOLER", {0, 2, 4, 5}, {90, 90, 90, 30}, {100, 50, 100, 50}, {100, 50, 50, 100}, 4},  
+    //RON
+    {"PIÑA COLADA", {1, 7}, {270, 30}, {250, 50}, {200, 100}, 2},
+    {"POMELO RUM SPLASH", {0, 3, 7}, {90, 180, 30}, {50, 200, 50}, {50, 150, 100}, 3},
+    {"TROPICAL PUNCH", {0, 1, 7}, {90, 180, 30}, {50, 200, 50}, {50, 150, 100}, 3},
+    {"RON PUNCH", {0, 1, 2, 7}, {90, 90, 90, 30}, {50, 125, 75, 50}, {50, 75, 75, 100}, 4}, 
+    {"RON TONIC TROPICAL", {0, 1, 4, 7}, {60, 120, 125, 30}, {25, 100, 125, 50}, {25, 100, 75, 100}, 4},
+    {"TROPICAL RUM STORM", {0, 1, 3, 7}, {60, 90, 120, 30}, {50, 100, 100, 50}, {50, 50, 100, 100}, 4}     
+};
+
+// Pin para el final de carrera
+const int pinFinalCarrera = A0;  // Pin del final de carrera
+bool finalCarreraActivado = false;
+
+
+#define PULSE_PIN 2 // Pin de interrupción para el YF-S201
+#define FlowMeterPulsePerSecondPerLiter 320
+
+float mL_per_pulse = (1000.0 / FlowMeterPulsePerSecondPerLiter) ; // Volumen en mL por cada pulso
+float targetVolume = 0.0;  // Volumen deseado en mL
+float accumulatedVolume = 0.0;
+volatile int pulseCount = 0;
+bool flowActive = false;  // Estado del flujo
+
+void startFlow() {
+  accumulatedVolume = 0.0;    // Reiniciar volumen acumulado
+  pulseCount = 0;             // Reiniciar conteo de pulsos
+  servo1.write(105);         // Abrir flujo al ángulo 105
+  flowActive = true;          // Cambiar el estado del flujo a activo
+  attachInterrupt(digitalPinToInterrupt(PULSE_PIN), pulseCounter, RISING); // Activar interrupciones
+  Serial.println("Flujo iniciado.");
+}
+
+void stopFlow() {
+  servo1.write(160);         // Cerrar flujo al ángulo 160
+  flowActive = false;         // Cambiar el estado del flujo a inactivo
+  detachInterrupt(digitalPinToInterrupt(PULSE_PIN)); // Desactivar interrupciones para evitar sobrelecturas
+  Serial.println("Volumen alcanzado y flujo detenido.");
+}
+
+void pulseCounter() {
+  pulseCount++; // Contar los pulsos en cada interrupción
+}
+
+// Mover el portavasos a la nueva posición
+void moverAPosicion(int nuevaPosicion) 
+{
+  int pasosNecesarios = nuevaPosicion - posicionActual;
+  if (pasosNecesarios > 0) 
+  {
+    motor.step(pasosNecesarios, FORWARD, INTERLEAVE);
+  } else if (pasosNecesarios < 0) 
+    {
+      motor.step(abs(pasosNecesarios), BACKWARD, INTERLEAVE);
+    }
+    posicionActual = nuevaPosicion;
+    motor.release();
+    delay(1000);
+}
+
+
+// Función para abrir el pico del servo y verter el líquido hasta alcanzar el volumen deseado
+void servoAbrirPico(float volumenObjetivo) 
+{
+      startFlow();
+    targetVolume = volumenObjetivo;
+    Serial.print("Volumen Objetivo: ");
+    Serial.print(targetVolume);
+    Serial.print(" mL\n");
+  // Verificar y acumular el volumen en mL
+  while (flowActive) 
+  {
+    accumulatedVolume += pulseCount * mL_per_pulse; // Acumular el volumen en mL directamente
+    pulseCount = 0;  // Reiniciar el conteo de pulsos
+
+    // Mostrar información del volumen en el monitor serial
+    Serial.print("Volumen acumulado: ");
+    Serial.println(accumulatedVolume);
+
+    // Detener flujo si se alcanzó el volumen deseado
+    if (accumulatedVolume >= targetVolume) 
+    {
+      stopFlow();
+    }
+  }
+}
+
+
+// Preparar la bebida según el nombre
+void prepararBebida(const char* nombreBebida, const char* intensidadBebida=nullptr) 
+{
+  // Buscar la bebida en el diccionario
+  float volumenIngrediente = 0;
+  
+  Serial.print("Nombre Bebida: ");
+  Serial.print(nombreBebida);
+  Serial.print("\n");
+  for (int i = 0; i < sizeof(bebidas) / sizeof(bebidas[0]); i++) 
+  {
+    Serial.print("Buscando bebida:");
+    Serial.print(bebidas[i].nombre);
+    Serial.print("\n");
+    if (strcmp(bebidas[i].nombre, nombreBebida) == 0) 
+    {
+      for (int j = 0; j < bebidas[i].numIngredientes; j++) 
+      {
+        int posicionBotella = bebidas[i].ingredientes[j];
+        if(strcmp(intensidadBebida, "SUAVE") == 0)
+        {
+          float volumenIngrediente = bebidas[i].volPorIngredienteSuave[j];
+          Serial.print("Volumen ingrediente: ");
+          Serial.print(volumenIngrediente);
+          Serial.print("\n"); 
+        }else if(strcmp(intensidadBebida, "NORMAL") == 0 || intensidadBebida == nullptr)
+        {
+          float volumenIngrediente = bebidas[i].volPorIngredienteNormal[j];
+          Serial.print("Volumen ingrediente: ");
+          Serial.print(volumenIngrediente);
+          Serial.print("\n"); 
+        }else if(strcmp(intensidadBebida, "FUERTE") == 0)
+        {
+          float volumenIngrediente = bebidas[i].volPorIngredienteFuerte[j];
+          Serial.print("Volumen ingrediente: ");
+          Serial.print(volumenIngrediente);
+          Serial.print("\n"); 
+        }
+          moverAPosicion(posicionesBotellas[posicionBotella]);
+          delay(1000);
+          servoAbrirPico(volumenIngrediente);
+      }
+      moverAPosicion(0);  // Regresar a la posición inicial
+      while (!finalCarreraActivado) 
+      {
+        delay(10);
+        finalCarreraActivado = digitalRead(pinFinalCarrera) == LOW;
+      }
+      enviarMensajeSerial("LISTO");
+      motor.release();
+      servo1.write(90);
+      servo2.write(180);
+      return;
+    }
+  }
+
+  enviarMensajeSerial("BEBIDA NO ENCONTRADA");
+}
+
+// Función para enviar mensajes por el puerto serial
+void enviarMensajeSerial(const char* mensaje) 
+{
+  Serial.println(mensaje);
+}
+
+// Configuración inicial
+void setup() 
+{
+  Serial.begin(115200);
+  motor.setSpeed(150);
+  pinMode(pinFinalCarrera, INPUT_PULLUP);
+  servo1.attach(pinServo1);
+  servo2.attach(pinServo2);
+  servo2.write(180);
+  delay(1000);
+  servo1.write(90);
+}
+
+
+// Función principal de ejecución
+
+
+void loop() {
+  if (Serial.available() > 0) {
+    // Leer el comando del puerto serial
+    String comando = Serial.readStringUntil('\n');
+    comando.trim(); // Eliminar espacios en blanco
+
+    Serial.print("Comando recibido: ");
+    Serial.println(comando);
+
+    // Convertir la cadena recibida a char*
+    char bebidaSolicitada[50];
+    char intensidad[20] = "";  // Por si no se recibe intensidad
+
+    // Buscar el separador (coma) y dividir la cadena
+    int separador = comando.indexOf(',');
+    if (separador != -1) {
+      // Si hay coma, separar bebida y intensidad
+      comando.substring(0, separador).toCharArray(bebidaSolicitada, sizeof(bebidaSolicitada));
+      comando.substring(separador + 1).toCharArray(intensidad, sizeof(intensidad));
+      prepararBebida(bebidaSolicitada, intensidad);
+    } else {
+      // Si no hay coma, solo se recibe la bebida
+      comando.toCharArray(bebidaSolicitada, sizeof(bebidaSolicitada));
+      prepararBebida(bebidaSolicitada);
+    }
+
+    // Imprimir las cadenas para verificar su contenido
+    Serial.print("Bebida solicitada: ");
+    Serial.println(bebidaSolicitada);  // Imprime la bebida solicitada
+
+    Serial.print("Intensidad: ");
+    Serial.println(intensidad);  // Imprime la intensidad de la bebida
+
+  }
+}
