@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="bebidasJugo">
+    <file>citrusBurst2.png</file>
+    <file>citrusBurst.png</file>
+    <file>citrusPunch.png</file>
+    <file>limonada.png</file>
+    <file>limonadaEspumosa.png</file>
+    <file>naranjada.png</file>
+    <file>naranjaSunrise.png</file>
+    <file>pinaColada.png</file>
+    <file>pinaCooler.png</file>
+  </qresource>
+</RCC>

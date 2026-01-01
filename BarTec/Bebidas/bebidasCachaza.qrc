@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="bebidasCachaza">
+    <file>cachazaTonic2.png</file>
+    <file>caipirinhaPomelo.png</file>
+    <file>batidaCitrus.png</file>
+    <file>cachazaCooler.png</file>
+    <file>cachazaTonic.png</file>
+    <file>caipifruta.png</file>
+    <file>caipirinha.png</file>
+    <file>caipirinhaCoca.png</file>
+    <file>tropicalCaipirinha.png</file>
+  </qresource>
+</RCC>
